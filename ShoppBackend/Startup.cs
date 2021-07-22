@@ -28,7 +28,7 @@ namespace ShoppBackend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MyShoppingAppContext>(options => 
-            options.UseSqlServer("Server=DESKTOP-R87RB2O\\SQLEXPRESS;Database=MyShoppingApp;Trusted_Connection=True;")
+            options.UseSqlServer("Server=DENIS\\SQLEXPRESS;Database=MyShoppingApp;Trusted_Connection=True;")
             );
             services.AddControllers().AddNewtonsoftJson(options => 
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
