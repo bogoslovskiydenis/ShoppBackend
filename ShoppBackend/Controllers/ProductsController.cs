@@ -43,7 +43,7 @@ namespace ShoppBackend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products.Include(s=>s.ProductSizes).ThenInclude(s=>s.Size).Include(s=>s.ProductImages).Where(p=>p.ProductId == id).FirstOrDefaultAsync();
 
             if (product == null)
             {
