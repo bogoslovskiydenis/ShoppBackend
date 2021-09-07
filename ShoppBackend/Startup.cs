@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,20 @@ namespace ShoppBackend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Add Jwt
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                //Firebase Project ID
+                options.Authority = "http://securetoken.google.com/fluttershoppapp-4b537";
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters {
+                    ValidateIssuer = true ,
+                    ValidIssuer = "http://securetoken.google.com/fluttershoppapp-4b537",
+                    ValidAudience= "fluttershoppapp-4b537",
+                    ValidateLifetime =true
+                };
+            });
+
+
             services.AddDbContext<MyShoppingAppContext>(options => 
             options.UseSqlServer("Data Source=(local) ;Database=MyShoppingApp;Trusted_Connection=True;")
             );
@@ -50,6 +65,8 @@ namespace ShoppBackend
             }
 
             app.UseRouting();
+
+            app.UseAuthentication(); 
 
             app.UseAuthorization();
 

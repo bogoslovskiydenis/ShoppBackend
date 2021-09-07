@@ -33,13 +33,14 @@ namespace ShoppBackend.Model
         public virtual DbSet<ProductSize> ProductSizes { get; set; }
         public virtual DbSet<Size> Sizes { get; set; }
         public virtual DbSet<SubCategory> SubCategories { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-R87RB2O\\SQLEXPRESS;Database=MyShoppingApp;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Data Source=(local) ;Database=MyShoppingApp;Trusted_Connection=True;");
             }
         }
 
@@ -353,6 +354,22 @@ namespace ShoppBackend.Model
                     .WithMany(p => p.SubCategories)
                     .HasForeignKey(d => d.CategoryId)
                     .HasConstraintName("FK_SUB_CATEGORY_CATEGORY");
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasKey(e => e.Uid)
+                    .HasName("PK_User");
+
+                entity.ToTable("USER");
+
+                entity.Property(e => e.Uid)
+                    .HasMaxLength(100)
+                    .HasColumnName("UID");
+
+                entity.Property(e => e.Name).HasMaxLength(150);
+
+                entity.Property(e => e.Phone).HasMaxLength(20);
             });
 
             OnModelCreatingPartial(modelBuilder);
