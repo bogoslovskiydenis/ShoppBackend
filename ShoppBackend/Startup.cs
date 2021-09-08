@@ -29,15 +29,23 @@ namespace ShoppBackend
         public void ConfigureServices(IServiceCollection services)
         {
             //Add Jwt
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            services.AddAuthentication(options =>
             {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                
                 //Firebase Project ID
                 options.Authority = "http://securetoken.google.com/fluttershoppapp-4b537";
+                options.RequireHttpsMetadata = false;
                 options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters {
                     ValidateIssuer = true ,
                     ValidIssuer = "http://securetoken.google.com/fluttershoppapp-4b537",
-                    ValidAudience= "fluttershoppapp-4b537",
+                    ValidAudience= "fluttershoppapp-4b537", //Project Id
                     ValidateLifetime =true
+                 
                 };
             });
 
